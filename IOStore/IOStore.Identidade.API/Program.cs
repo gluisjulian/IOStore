@@ -8,7 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 //Context
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//SQLSERVER
+//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+//MySQL
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 34));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options
+                .UseMySql(builder.Configuration.GetConnectionString("MySQLConnection"), serverVersion)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors());
 
 //Context do Identity
 builder.Services.AddDefaultIdentity<IdentityUser>()
